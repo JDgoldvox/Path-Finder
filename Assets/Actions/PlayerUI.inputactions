@@ -1,0 +1,54 @@
+{
+    "name": "PlayerUI",
+    "maps": [
+        {
+            "name": "UI",
+            "id": "bb6cfad7-302c-4b60-9bba-6f5ed471c980",
+            "actions": [
+                {
+                    "name": "PlaceStartLocation",
+                    "type": "Button",
+                    "id": "233cc84f-f0e4-47e4-aeb8-af4c5c280407",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "PlaceEndLocation",
+                    "type": "Button",
+                    "id": "0ee7272d-0c0f-45e7-848a-d5812612fd19",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c63c043b-1829-4aae-8c81-25d1eb5f1aeb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceStartLocation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57de293c-ab24-41bd-8773-a8d99b82cc32",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceEndLocation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Unity.Collections.AllocatorManager;
 
 public class CameraControls : MonoBehaviour
 {
     public CameraInputActions S_cameraInputActions;
     private InputAction move;
-    private InputAction fire;
     private Vector2 moveDirection;
     private float cameraMoveSpeed = 2000f;
     private Rigidbody2D rb;
@@ -23,16 +23,11 @@ public class CameraControls : MonoBehaviour
     {
         move = S_cameraInputActions.Player.Move;
         move.Enable();
-
-        fire = S_cameraInputActions.Player.Fire;
-        fire.Enable();
-        fire.performed += Fire;
     }
 
     private void OnDisable()
     {
         move.Disable();
-        fire.Disable();
     }
 
     // Start is called before the first frame update
@@ -45,11 +40,6 @@ public class CameraControls : MonoBehaviour
     void Update()
     {
         CameraMovement();
-    }
-
-    private void Fire(InputAction.CallbackContext context)
-    {
-        Debug.Log("We fired!");
     }
 
     private void CameraMovement()

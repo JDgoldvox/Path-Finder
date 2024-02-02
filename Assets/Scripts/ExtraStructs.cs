@@ -11,4 +11,12 @@ public static class ExtraFunctions
         newxy.y = (int)(xy.y / resolution);
         return newxy;
     }
+
+    public static Vector2Int QuantizeFloatToInt(float xInput, float yInput, int resolution)
+    {
+        Vector2Int newxy = new Vector2Int();
+        newxy.x = (int)(xInput / resolution);
+        newxy.y = (int)(yInput / resolution);
+        return newxy;
+    }
 }

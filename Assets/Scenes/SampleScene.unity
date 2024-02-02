@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 519420030}
   - component: {fileID: 519420034}
   - component: {fileID: 519420035}
+  - component: {fileID: 519420036}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -301,6 +302,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &519420036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7272b6989c18894eb130df2a8cd75f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  S_boardGenerator: {fileID: 2113269227}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,6 +512,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardSize: {x: 10, y: 10}
   boardSquare: {fileID: 5066768621555166512, guid: 2b684f169d638f84aaa56917e685b525, type: 3}
+  dot: {fileID: 3464070486481861141, guid: 5e50f8374eeaab64aa8efc19cde342b6, type: 3}
+  squareSize: 1
 --- !u!4 &2113269228
 Transform:
   m_ObjectHideFlags: 0
