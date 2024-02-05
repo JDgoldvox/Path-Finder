@@ -510,7 +510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f4bc4534f10024b8ecd0f46462ef3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardSize: {x: 10, y: 10}
+  boardSize: {x: 50, y: 50}
   boardSquare: {fileID: 5066768621555166512, guid: 2b684f169d638f84aaa56917e685b525, type: 3}
   dot: {fileID: 3464070486481861141, guid: 5e50f8374eeaab64aa8efc19cde342b6, type: 3}
   squareSize: 1

@@ -52,7 +52,7 @@ public class PlayerUIControls : MonoBehaviour
         Vector2 clickScreenLocation = Mouse.current.position.ReadValue();
         Vector3 clickWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(clickScreenLocation.x, clickScreenLocation.y, 0f));
 
-        Debug.Log("start : " + clickWorldPosition);
+        Debug.Log("Clicked on : " + clickWorldPosition);
 
         CheckForCollisionsWithSquares(clickWorldPosition);
     }
@@ -69,7 +69,7 @@ public class PlayerUIControls : MonoBehaviour
 
     private void CheckForCollisionsWithSquares(Vector3 clickCoordinates)
     {
-        Vector2Int quantizedCoords = ExtraFunctions.QuantizeFloatToInt(clickCoordinates.x, clickCoordinates.y, S_boardGenerator.squareSize);
+        Vector2Int quantizedCoords = ExtraFunctions.QuantizeFloatToInt(clickCoordinates.x, clickCoordinates.y, S_boardGenerator.squareSize, S_boardGenerator.squareSize);
 
         if(S_boardGenerator.board.TryGetValue(quantizedCoords, out GameObject square))
         {
