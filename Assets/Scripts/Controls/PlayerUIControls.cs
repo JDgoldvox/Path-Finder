@@ -1,12 +1,14 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerUIControls : MonoBehaviour
 {
+    enum ClickCommand
+    {
+        start,end
+    }
+
     [SerializeField] private BoardGenerator S_boardGenerator;
     PlayerUI S_playerUI;
     InputAction placeStartLocation;
@@ -52,9 +54,7 @@ public class PlayerUIControls : MonoBehaviour
         Vector2 clickScreenLocation = Mouse.current.position.ReadValue();
         Vector3 clickWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(clickScreenLocation.x, clickScreenLocation.y, 0f));
 
-        Debug.Log("Clicked on : " + clickWorldPosition);
-
-        CheckForCollisionsWithSquares(clickWorldPosition);
+        CheckForCollisionsWithSquares(clickWorldPosition, ClickCommand.start);
     }
 
     private void PlaceEndLocation(InputAction.CallbackContext context)
@@ -62,27 +62,31 @@ public class PlayerUIControls : MonoBehaviour
         Vector2 clickScreenLocation = Mouse.current.position.ReadValue();
         Vector3 clickWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(clickScreenLocation.x, clickScreenLocation.y, Camera.main.nearClipPlane));
 
-        //Debug.Log("end : " + clickWorldPosition);
-
-        CheckForCollisionsWithSquares(clickWorldPosition);
+        CheckForCollisionsWithSquares(clickWorldPosition, ClickCommand.end);
     }
 
-    private void CheckForCollisionsWithSquares(Vector3 clickCoordinates)
+    private void CheckForCollisionsWithSquares(Vector3 clickCoordinates, ClickCommand command)
     {
         Vector2Int quantizedCoords = ExtraFunctions.QuantizeFloatToInt(clickCoordinates.x, clickCoordinates.y, S_boardGenerator.squareSize, S_boardGenerator.squareSize);
 
         if(S_boardGenerator.board.TryGetValue(quantizedCoords, out GameObject square))
         {
-            Debug.Log("SQUARE FOUND: COORDS:" + quantizedCoords);
-            Debug.Log("actual centre:" + square.GetComponent<BoardSquare>().centre);
-
             //change color of dot
             if (!square.TryGetComponent(out SpriteRenderer spriteRenderer))
             {
                 Debug.Log("Dot does not have sprite renderer");
                 return;
             }
-            square.GetComponent<SpriteRenderer>().color = Color.green;
+
+            if(command == ClickCommand.start)
+            {
+                square.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+            else if(command == ClickCommand.end)
+            {
+                square.GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+            
         }
     }
 }

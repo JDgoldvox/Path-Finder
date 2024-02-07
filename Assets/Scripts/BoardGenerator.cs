@@ -28,8 +28,6 @@ public class BoardGenerator : MonoBehaviour
 
     public void GenerateBoard()
     {
-        //int totalBoardSize = boardSize.x * boardSize.y;
-
         //Instantiate a square for each 
         for (int x = 0; x < boardSize.x; x += squareSize)
         {
@@ -40,9 +38,6 @@ public class BoardGenerator : MonoBehaviour
                 newSquare.transform.localScale = new Vector2(newSquare.transform.localScale.x, newSquare.transform.localScale.y);
                 Vector2Int newSquarePosition = ExtraFunctions.QuantizeFloatToInt(new Vector2(x, y), squareSize, squareSize);
                 newSquare.transform.parent = transform;
-
-                //Debug.Log("square original position: " + newSquare.transform.position);
-                //Debug.Log("square quantized position: " + newSquarePosition);
 
                 //add square to dictionary
                 board[newSquarePosition] = newSquare;
@@ -58,32 +53,6 @@ public class BoardGenerator : MonoBehaviour
                 }
             }
         }
-
-        ////testing to see boundries for each square
-        //foreach (GameObject square in board.Values)
-        //{
-        //    var script = square.GetComponent<BoardSquare>();
-
-        //    Debug.Log
-        //}
-
-        var script = board[new Vector2Int(0,0)].GetComponent<BoardSquare>();
-        Debug.Log("-----------------------------");
-        Debug.Log("THE CENTRE: " + script.centre);
-        Debug.Log("MAX X: " + (script.centre.x + 0.5f));
-        Debug.Log("MIN X: " + (script.centre.x - 0.5f));
-        Debug.Log("MAX Y: " + (script.centre.y + 0.5f));
-        Debug.Log("MIN Y: " + (script.centre.y - 0.5f));
-        Debug.Log("-----------------------------");
-        script = board[new Vector2Int(1, 0)].GetComponent<BoardSquare>();
-        Debug.Log("-----------------------------");
-        Debug.Log("THE CENTRE: " + script.centre);
-        Debug.Log("MAX X: " + (script.centre.x + 0.5f));
-        Debug.Log("MIN X: " + (script.centre.x - 0.5f));
-        Debug.Log("MAX Y: " + (script.centre.y + 0.5f));
-        Debug.Log("MIN Y: " + (script.centre.y - 0.5f));
-        Debug.Log("-----------------------------");
-
 
         //test if centre point is working, there should be a small dot in the centre
         float scaleOfCentreDot = (float)squareSize / 4;

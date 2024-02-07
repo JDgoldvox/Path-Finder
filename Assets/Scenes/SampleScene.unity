@@ -514,6 +514,7 @@ MonoBehaviour:
   boardSquare: {fileID: 5066768621555166512, guid: 2b684f169d638f84aaa56917e685b525, type: 3}
   dot: {fileID: 3464070486481861141, guid: 5e50f8374eeaab64aa8efc19cde342b6, type: 3}
   squareSize: 1
+  squareScale: 2.5
 --- !u!4 &2113269228
 Transform:
   m_ObjectHideFlags: 0
