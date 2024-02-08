@@ -48,7 +48,7 @@ public class BoardActionHub : MonoBehaviour
 
     void Algorithm()
     {
-        S_bfs.FindBestSquare();
+        S_bfs.StartAlgorithm(ref board, startSquare, endSquare);
     }
 
     public void ChangeSquareColour(Vector2Int squarePosition, Color colour)
