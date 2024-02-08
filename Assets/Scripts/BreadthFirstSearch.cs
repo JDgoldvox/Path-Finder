@@ -7,6 +7,12 @@ using UnityEngine.UIElements;
 
 public class BreadthFirstSearch : MonoBehaviour
 {
+    private BoardGenerator S_boardGenerator;
+
+    private void Awake()
+    {
+        S_boardGenerator = GetComponent<BoardGenerator>();
+    }
     void Start()
     {
 
@@ -53,19 +59,26 @@ public class BreadthFirstSearch : MonoBehaviour
         List<Vector2Int> neighbours = new List<Vector2Int>();
 
         //remember limits
-
+        Vector2Int search;
         //check top left, top, top right
-        Vector2Int search = new Vector2Int(current.x - 1, current.y);
-        
-        //if this neighbour exists, 
-        if(board.TryGetValue(search, out GameObject topLeftNeighbour)){
-            neighbours.Add(search);
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = -1; y < 2; y++)
+            {
+                search = new Vector2Int(current.x + x, current.y + y);
+
+                if(search.x < 0) { continue; }
+                if(search.y < 0) { continue; }
+                if(search.x > S_boardGenerator.boardSize.x - 1) { continue; }
+                if(search.y > S_boardGenerator.boardSize.y - 1) { continue; }
+
+                //if this neighbour exists, 
+                if (board.TryGetValue(search, out GameObject existingNeighbour))
+                {
+                    neighbours.Add(search);
+                }
+            }
         }
-
-        //check middle left, middle right,
-        //check bottom left, bottom, bottom right.
-
-        return new List<Vector2Int>();
+        return neighbours;
     }
-
 }

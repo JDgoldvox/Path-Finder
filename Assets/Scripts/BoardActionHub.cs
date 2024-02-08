@@ -6,9 +6,8 @@ using UnityEngine;
 public class BoardActionHub : MonoBehaviour
 {
     private BreadthFirstSearch S_bfs;
-
     
-    [HideInInspector] BoardGenerator S_boardGenerator;
+    private BoardGenerator S_boardGenerator;
     private Dictionary<Vector2Int, GameObject> board;
     [HideInInspector] public bool hasStartSquare = false, hasEndSquare = false;
     [HideInInspector] public Vector2Int startSquare = new Vector2Int(0, 0);
