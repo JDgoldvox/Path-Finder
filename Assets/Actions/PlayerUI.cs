@@ -28,18 +28,9 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
             ""id"": ""bb6cfad7-302c-4b60-9bba-6f5ed471c980"",
             ""actions"": [
                 {
-                    ""name"": ""PlaceStartLocation"",
+                    ""name"": ""Place"",
                     ""type"": ""Button"",
                     ""id"": ""233cc84f-f0e4-47e4-aeb8-af4c5c280407"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""PlaceEndLocation"",
-                    ""type"": ""Button"",
-                    ""id"": ""0ee7272d-0c0f-45e7-848a-d5812612fd19"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -49,6 +40,15 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
                     ""name"": ""Step"",
                     ""type"": ""Button"",
                     ""id"": ""40c62afe-2003-4c37-a5b7-d78a6d2127c3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeClickCommand"",
+                    ""type"": ""Button"",
+                    ""id"": ""0423c924-24d6-4fb3-a5df-500a1d52940b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -63,18 +63,7 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PlaceStartLocation"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""57de293c-ab24-41bd-8773-a8d99b82cc32"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""PlaceEndLocation"",
+                    ""action"": ""Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -88,6 +77,17 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
                     ""action"": ""Step"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32348470-f454-49cc-9884-69322ee8dd88"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeClickCommand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -96,9 +96,9 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
 }");
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_PlaceStartLocation = m_UI.FindAction("PlaceStartLocation", throwIfNotFound: true);
-        m_UI_PlaceEndLocation = m_UI.FindAction("PlaceEndLocation", throwIfNotFound: true);
+        m_UI_Place = m_UI.FindAction("Place", throwIfNotFound: true);
         m_UI_Step = m_UI.FindAction("Step", throwIfNotFound: true);
+        m_UI_ChangeClickCommand = m_UI.FindAction("ChangeClickCommand", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -160,16 +160,16 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_PlaceStartLocation;
-    private readonly InputAction m_UI_PlaceEndLocation;
+    private readonly InputAction m_UI_Place;
     private readonly InputAction m_UI_Step;
+    private readonly InputAction m_UI_ChangeClickCommand;
     public struct UIActions
     {
         private @PlayerUI m_Wrapper;
         public UIActions(@PlayerUI wrapper) { m_Wrapper = wrapper; }
-        public InputAction @PlaceStartLocation => m_Wrapper.m_UI_PlaceStartLocation;
-        public InputAction @PlaceEndLocation => m_Wrapper.m_UI_PlaceEndLocation;
+        public InputAction @Place => m_Wrapper.m_UI_Place;
         public InputAction @Step => m_Wrapper.m_UI_Step;
+        public InputAction @ChangeClickCommand => m_Wrapper.m_UI_ChangeClickCommand;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -179,28 +179,28 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            @PlaceStartLocation.started += instance.OnPlaceStartLocation;
-            @PlaceStartLocation.performed += instance.OnPlaceStartLocation;
-            @PlaceStartLocation.canceled += instance.OnPlaceStartLocation;
-            @PlaceEndLocation.started += instance.OnPlaceEndLocation;
-            @PlaceEndLocation.performed += instance.OnPlaceEndLocation;
-            @PlaceEndLocation.canceled += instance.OnPlaceEndLocation;
+            @Place.started += instance.OnPlace;
+            @Place.performed += instance.OnPlace;
+            @Place.canceled += instance.OnPlace;
             @Step.started += instance.OnStep;
             @Step.performed += instance.OnStep;
             @Step.canceled += instance.OnStep;
+            @ChangeClickCommand.started += instance.OnChangeClickCommand;
+            @ChangeClickCommand.performed += instance.OnChangeClickCommand;
+            @ChangeClickCommand.canceled += instance.OnChangeClickCommand;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
         {
-            @PlaceStartLocation.started -= instance.OnPlaceStartLocation;
-            @PlaceStartLocation.performed -= instance.OnPlaceStartLocation;
-            @PlaceStartLocation.canceled -= instance.OnPlaceStartLocation;
-            @PlaceEndLocation.started -= instance.OnPlaceEndLocation;
-            @PlaceEndLocation.performed -= instance.OnPlaceEndLocation;
-            @PlaceEndLocation.canceled -= instance.OnPlaceEndLocation;
+            @Place.started -= instance.OnPlace;
+            @Place.performed -= instance.OnPlace;
+            @Place.canceled -= instance.OnPlace;
             @Step.started -= instance.OnStep;
             @Step.performed -= instance.OnStep;
             @Step.canceled -= instance.OnStep;
+            @ChangeClickCommand.started -= instance.OnChangeClickCommand;
+            @ChangeClickCommand.performed -= instance.OnChangeClickCommand;
+            @ChangeClickCommand.canceled -= instance.OnChangeClickCommand;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -220,8 +220,8 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
     public UIActions @UI => new UIActions(this);
     public interface IUIActions
     {
-        void OnPlaceStartLocation(InputAction.CallbackContext context);
-        void OnPlaceEndLocation(InputAction.CallbackContext context);
+        void OnPlace(InputAction.CallbackContext context);
         void OnStep(InputAction.CallbackContext context);
+        void OnChangeClickCommand(InputAction.CallbackContext context);
     }
 }
