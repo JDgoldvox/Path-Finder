@@ -10,9 +10,11 @@ public class PlayerUIControls : MonoBehaviour
     }
 
     [SerializeField] private BoardGenerator S_boardGenerator;
+    [SerializeField] private BoardActionHub S_boardActionHub;
     PlayerUI S_playerUI;
     InputAction placeStartLocation;
     InputAction placeEndLocation;
+    InputAction step;
 
     private void Awake()
     {
@@ -28,12 +30,17 @@ public class PlayerUIControls : MonoBehaviour
         placeEndLocation = S_playerUI.UI.PlaceEndLocation;
         placeEndLocation.Enable();
         placeEndLocation.performed += PlaceEndLocation;
+
+        step = S_playerUI.UI.Step;
+        step.Enable();
+        step.performed += Step;
     }
 
     private void OnDisable()
     {
         placeStartLocation.Disable();
         placeEndLocation.Disable();
+        step.Disable();
 
     }
 
@@ -67,26 +74,29 @@ public class PlayerUIControls : MonoBehaviour
 
     private void CheckForCollisionsWithSquares(Vector3 clickCoordinates, ClickCommand command)
     {
+        if (S_boardActionHub.hasStartSquare && S_boardActionHub.hasEndSquare) { return; }
+
         Vector2Int quantizedCoords = ExtraFunctions.QuantizeFloatToInt(clickCoordinates.x, clickCoordinates.y, S_boardGenerator.squareSize, S_boardGenerator.squareSize);
 
         if(S_boardGenerator.board.TryGetValue(quantizedCoords, out GameObject square))
         {
-            //change color of dot
-            if (!square.TryGetComponent(out SpriteRenderer spriteRenderer))
-            {
-                Debug.Log("Dot does not have sprite renderer");
-                return;
-            }
-
             if(command == ClickCommand.start)
             {
-                square.GetComponent<SpriteRenderer>().color = Color.red;
+                S_boardActionHub.startSquare = quantizedCoords;
+                S_boardActionHub.hasStartSquare = true;
+                S_boardActionHub.ChangeSquareColour(quantizedCoords, Color.red);
             }
             else if(command == ClickCommand.end)
             {
-                square.GetComponent<SpriteRenderer>().color = Color.blue;
+                S_boardActionHub.endSquare = quantizedCoords;
+                S_boardActionHub.hasEndSquare = true;
+                S_boardActionHub.ChangeSquareColour(quantizedCoords, Color.green);
             }
-            
         }
+    }
+
+    private void Step(InputAction.CallbackContext context)
+    {
+        S_boardActionHub.isStep = true;
     }
 }

@@ -44,6 +44,15 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Step"",
+                    ""type"": ""Button"",
+                    ""id"": ""40c62afe-2003-4c37-a5b7-d78a6d2127c3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -68,6 +77,17 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
                     ""action"": ""PlaceEndLocation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""957a6cb3-3de5-49e4-aeda-de27072f4523"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Step"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -78,6 +98,7 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_PlaceStartLocation = m_UI.FindAction("PlaceStartLocation", throwIfNotFound: true);
         m_UI_PlaceEndLocation = m_UI.FindAction("PlaceEndLocation", throwIfNotFound: true);
+        m_UI_Step = m_UI.FindAction("Step", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -141,12 +162,14 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
     private readonly InputAction m_UI_PlaceStartLocation;
     private readonly InputAction m_UI_PlaceEndLocation;
+    private readonly InputAction m_UI_Step;
     public struct UIActions
     {
         private @PlayerUI m_Wrapper;
         public UIActions(@PlayerUI wrapper) { m_Wrapper = wrapper; }
         public InputAction @PlaceStartLocation => m_Wrapper.m_UI_PlaceStartLocation;
         public InputAction @PlaceEndLocation => m_Wrapper.m_UI_PlaceEndLocation;
+        public InputAction @Step => m_Wrapper.m_UI_Step;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -162,6 +185,9 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
             @PlaceEndLocation.started += instance.OnPlaceEndLocation;
             @PlaceEndLocation.performed += instance.OnPlaceEndLocation;
             @PlaceEndLocation.canceled += instance.OnPlaceEndLocation;
+            @Step.started += instance.OnStep;
+            @Step.performed += instance.OnStep;
+            @Step.canceled += instance.OnStep;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -172,6 +198,9 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
             @PlaceEndLocation.started -= instance.OnPlaceEndLocation;
             @PlaceEndLocation.performed -= instance.OnPlaceEndLocation;
             @PlaceEndLocation.canceled -= instance.OnPlaceEndLocation;
+            @Step.started -= instance.OnStep;
+            @Step.performed -= instance.OnStep;
+            @Step.canceled -= instance.OnStep;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -193,5 +222,6 @@ public partial class @PlayerUI: IInputActionCollection2, IDisposable
     {
         void OnPlaceStartLocation(InputAction.CallbackContext context);
         void OnPlaceEndLocation(InputAction.CallbackContext context);
+        void OnStep(InputAction.CallbackContext context);
     }
 }

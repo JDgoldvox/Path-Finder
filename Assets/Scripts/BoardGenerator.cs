@@ -13,20 +13,7 @@ public class BoardGenerator : MonoBehaviour
 
     [HideInInspector] public int squareSize = 1;
     [HideInInspector] public float squareScale = 2.5f;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        GenerateBoard();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void GenerateBoard()
+    public Dictionary<Vector2Int, GameObject> GenerateBoard()
     {
         //Instantiate a square for each 
         for (int x = 0; x < boardSize.x; x += squareSize)
@@ -70,19 +57,21 @@ public class BoardGenerator : MonoBehaviour
             if (!square.TryGetComponent(out BoardSquare squareScript))
             {
                 Debug.Log("Square script does not exist");
-                return;
+                return null;
             }
 
             //change color of dot
             if (!dot.TryGetComponent(out SpriteRenderer spriteRenderer))
             {
                 Debug.Log("Dot does not have sprite renderer");
-                return;
+                return null;
             }
-            dot.GetComponent<SpriteRenderer>().color = Color.red;
+            dot.GetComponent<SpriteRenderer>().color = Color.black;
 
             //transform dot to centre of square using float coords
             obj.transform.position = squareScript.centre;
         }
+
+        return board;
     }
 }
