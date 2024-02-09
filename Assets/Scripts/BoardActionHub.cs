@@ -33,48 +33,66 @@ public class BoardActionHub : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //isEverythingComplete();
-        
-        //if(hasStartSquare && hasEndSquare)
-        //{
-        //    if (!isStep)
-        //    {
-        //        return;
-        //    }
-        //    isStep = false;
+        if (!isEverythingComplete()) { return; }
 
-        //    Debug.Log("starting");
-        //    Algorithm();
-        //}
+        if (!isStep)
+        {
+            return;
+        }
+        isStep = false;
+
+        Debug.Log("starting");
+        Algorithm();
     }
 
     void Algorithm()
     {
-        S_bfs.StartAlgorithm(ref board, startSquare, endSquare);
+        StartCoroutine(S_bfs.StartAlgorithm(board, startSquare, endSquare));
     }
 
-    public void ChangeSquareColour(Vector2Int squarePosition, ClickCommand clickCommand)
+    public void ChangeSquareColour(Vector2Int squarePosition, Command command)
     {
-        Color colorChange = new Color32();
+        Color colorChange = new Color();
 
-        if (clickCommand == ClickCommand.start) {
+        if (command == Command.start) 
+        {
+            ResetSquare(startSquare);
             startSquare = squarePosition;
             hasStartSquare = true;
-            colorChange = startSquareColor; 
+            colorChange = startSquareColor;
+
+            //check if we replaced end
+            if (endSquare == startSquare) { hasEndSquare = false; }
         }
-        else if (clickCommand == ClickCommand.end) 
+        else if (command == Command.end) 
         {
+            ResetSquare(endSquare);
             endSquare = squarePosition;
             hasEndSquare = true;
             colorChange = endSquareColor;
+
+            //check if we replaced start
+            if(endSquare == startSquare){ hasStartSquare = false; }
         }
-        else if (clickCommand == ClickCommand.wall)
+        else if (command == Command.wall)
         {
             colorChange = wallSquareColor; 
         }
-        else if (clickCommand == ClickCommand.empty)
+        else if (command == Command.empty)
         {
-            colorChange = emptySquareColor; 
+            ResetSquare(squarePosition);
+        }
+        else if(command == Command.frontier)
+        {
+            colorChange = frontierSquareColor;
+        }
+        else if (command == Command.visited)
+        {
+            colorChange = visitedColor;
+        }
+        else if (command == Command.bestPath)
+        {
+            colorChange = bestPathColor;
         }
         else { 
             colorChange = wrongSquareColor;
@@ -98,7 +116,7 @@ public class BoardActionHub : MonoBehaviour
         sr.color = colorChange;
 
         //change wall status
-        if(clickCommand == ClickCommand.wall)
+        if(command == Command.wall)
         {
             if(!squareToChange.TryGetComponent(out BoardSquare boardSquareScript))
             {
@@ -106,8 +124,7 @@ public class BoardActionHub : MonoBehaviour
             }
             boardSquareScript.isWall = true;
         }
-    }   
-
+    }
     public void ContinuousStep()
     {
         isContinuousStep = !isContinuousStep;
@@ -118,4 +135,24 @@ public class BoardActionHub : MonoBehaviour
         return hasStartSquare && hasEndSquare ? true : false;
     }
 
+    private void ResetSquare(Vector2Int squarePosition) //reset previous start square to orginal state
+    {
+        GameObject square = board[squarePosition];
+
+        //grab script
+        if (!square.TryGetComponent(out BoardSquare squareScript))
+        {
+            Debug.Log("No BoardSquare script located");
+            return;
+        }
+
+        //change wall status
+        squareScript.isWall = false;
+
+        //grab child 
+        SpriteRenderer sr = square.transform.GetChild(0).GetComponent<SpriteRenderer>();
+
+        //reset to default color
+        sr.color = emptySquareColor;
+    }
 }

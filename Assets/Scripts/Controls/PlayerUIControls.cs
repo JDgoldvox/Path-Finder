@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum ClickCommand
+public enum Command
 {
-    start, end, wall, empty
+    start, end, wall, empty, frontier, visited, bestPath
 }
 
 public class PlayerUIControls : MonoBehaviour
 {
-    ClickCommand currentClickCommand = ClickCommand.start;
+    Command currentClickCommand = Command.start;
 
     [SerializeField] private BoardGenerator S_boardGenerator;
     [SerializeField] private BoardActionHub S_boardActionHub;
@@ -19,7 +19,7 @@ public class PlayerUIControls : MonoBehaviour
     InputAction step;
     InputAction changeClickCommand;
     int currentClickCommandIndex = 0;
-    List<ClickCommand> commandList = new List<ClickCommand>();
+    List<Command> commandList = new List<Command>();
 
     private void Awake()
     {
@@ -52,10 +52,10 @@ public class PlayerUIControls : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        commandList.Add(ClickCommand.start);
-        commandList.Add(ClickCommand.end);
-        commandList.Add(ClickCommand.wall);
-        commandList.Add(ClickCommand.empty);
+        commandList.Add(Command.start);
+        commandList.Add(Command.end);
+        commandList.Add(Command.wall);
+        commandList.Add(Command.empty);
     }
 
     // Update is called once per frame

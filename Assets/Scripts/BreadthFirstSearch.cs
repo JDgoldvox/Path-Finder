@@ -6,34 +6,40 @@ using UnityEngine;
 public class BreadthFirstSearch : MonoBehaviour
 {
     private BoardGenerator S_boardGenerator;
+    private BoardActionHub S_boardActionHub;
 
     private void Awake()
     {
         S_boardGenerator = GetComponent<BoardGenerator>();
+        S_boardActionHub = GetComponent<BoardActionHub>();
     }
     void Start()
     {
 
     }
 
-    public Vector2Int StartAlgorithm(ref Dictionary<Vector2Int, GameObject> board, Vector2Int start, Vector2Int end)
+    public IEnumerator StartAlgorithm(Dictionary<Vector2Int, GameObject> board, Vector2Int start, Vector2Int end)
     {
         Debug.Log("starting aglor");
 
         Queue<Vector2Int> frontier = new Queue<Vector2Int>();
         frontier.Enqueue(start);
+        S_boardActionHub.ChangeSquareColour(start, Command.frontier);
 
         HashSet<Vector2Int> reached = new HashSet<Vector2Int>();
         reached.Add(start);
+        S_boardActionHub.ChangeSquareColour(start, Command.visited);
 
         Vector2Int current = new Vector2Int();
             
         //magic happens inside here
         while (frontier.Count > 0)
         {
-            current = frontier.Dequeue();
+            //wait seconds
+            yield return new WaitForSeconds(0.01f);
 
-            Console.WriteLine("Visiting {0}", current);
+            current = frontier.Dequeue();
+            S_boardActionHub.ChangeSquareColour(current, Command.visited);
 
             //get neighbours
             List<Vector2Int> neighbours = GetNeighbours(ref board, current);
@@ -44,11 +50,11 @@ public class BreadthFirstSearch : MonoBehaviour
                 if(!reached.Contains(neighbourSquare)) {
                     frontier.Enqueue(neighbourSquare);
                     reached.Add(neighbourSquare);
+
+                    S_boardActionHub.ChangeSquareColour(neighbourSquare, Command.visited);
                 }
             }
         }
-
-        return new Vector2Int();
     }
 
     private List<Vector2Int> GetNeighbours(ref Dictionary<Vector2Int, GameObject> board, Vector2Int current)
