@@ -2436,12 +2436,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba4274afa6591e4eb2179337801bd2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasStartSquare: 0
-  hasEndSquare: 0
+  hasCompleteInits: 0
   startSquare: {x: 0, y: 0}
   endSquare: {x: 0, y: 0}
-  frontierSquareColor: {x: 0, y: 0, z: 0, w: 0}
-  visitedColor: {x: 0, y: 0, z: 0, w: 0}
+  frontierSquareColor: {x: 0.051, y: 0.475, z: 0.922, w: 1}
+  visitedColor: {x: 0.208, y: 0.918, z: 0.922, w: 1}
   bestPathColor: {x: 0, y: 0, z: 0, w: 0}
   startSquareColor: {x: 1, y: 0, z: 0, w: 1}
   endSquareColor: {x: 0, y: 1, z: 0, w: 1}

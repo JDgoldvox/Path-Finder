@@ -51,7 +51,7 @@ public class BreadthFirstSearch : MonoBehaviour
                     frontier.Enqueue(neighbourSquare);
                     reached.Add(neighbourSquare);
 
-                    S_boardActionHub.ChangeSquareColour(neighbourSquare, Command.visited);
+                    S_boardActionHub.ChangeSquareColour(neighbourSquare, Command.frontier);
                 }
             }
         }
@@ -62,7 +62,6 @@ public class BreadthFirstSearch : MonoBehaviour
 
         List<Vector2Int> neighbours = new List<Vector2Int>();
 
-        //remember limits
         Vector2Int search;
         //check top left, top, top right
         for (int x = -1; x < 2; x++)
@@ -71,11 +70,19 @@ public class BreadthFirstSearch : MonoBehaviour
             {
                 search = new Vector2Int(current.x + x, current.y + y);
 
+                //check in bounds
                 if(search.x < 0) { continue; }
                 if(search.y < 0) { continue; }
                 if(search.x > S_boardGenerator.boardSize.x - 1) { continue; }
                 if(search.y > S_boardGenerator.boardSize.y - 1) { continue; }
 
+                //check for isWall
+                //grab board square script
+                if (!board[search].TryGetComponent(out BoardSquare squareScript)){
+                    Debug.Log("No Square Script located");
+                }
+                if (squareScript.isWall) { continue; }
+                
                 //if this neighbour exists, 
                 if (board.TryGetValue(search, out GameObject existingNeighbour))
                 {
