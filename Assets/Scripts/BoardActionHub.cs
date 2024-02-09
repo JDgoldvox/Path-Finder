@@ -13,7 +13,7 @@ public class BoardActionHub : MonoBehaviour
     [HideInInspector] public Vector2Int startSquare = new Vector2Int(0, 0);
     [HideInInspector] public Vector2Int endSquare = new Vector2Int(0, 0);
 
-    [SerializeField] private Vector4 frontierSquareColor, visitedColor, bestPathColor;
+    [SerializeField] private Vector4 frontierSquareColor, visitedColor, bestPathColor, currentSquareColor;
     [SerializeField] private Vector4 startSquareColor, endSquareColor, wallSquareColor, emptySquareColor, wrongSquareColor;
     [HideInInspector] public bool isStep = false;
     private bool isContinuousStep = false;
@@ -84,19 +84,35 @@ public class BoardActionHub : MonoBehaviour
         }
         else if(command == Command.frontier)
         {
+            //Don't over write the color of the start or end square
+            if (squarePosition == startSquare || squarePosition == endSquare) { return; }
+
             colorChange = frontierSquareColor;
         }
         else if (command == Command.visited)
         {
+            //Don't over write the color of the start or end square
+            if (squarePosition == startSquare || squarePosition == endSquare) { return; }
+
             colorChange = visitedColor;
         }
         else if (command == Command.bestPath)
         {
+            //Don't over write the color of the start or end square
+            if (squarePosition == startSquare || squarePosition == endSquare) { return; }
+
             colorChange = bestPathColor;
+        }
+        else if(command == Command.current)
+        {
+            //Don't over write the color of the start or end square
+            if (squarePosition == startSquare || squarePosition == endSquare) { return; }
+
+            colorChange = currentSquareColor;
         }
         else { 
             colorChange = wrongSquareColor;
-            Debug.Log("This color change does not have a click command. Action undefined.");
+            Debug.Log("This color change does not have a command. Action undefined.");
         }
 
         //get the game object's script

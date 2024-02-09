@@ -2441,7 +2441,8 @@ MonoBehaviour:
   endSquare: {x: 0, y: 0}
   frontierSquareColor: {x: 0.051, y: 0.475, z: 0.922, w: 1}
   visitedColor: {x: 0.208, y: 0.918, z: 0.922, w: 1}
-  bestPathColor: {x: 0, y: 0, z: 0, w: 0}
+  bestPathColor: {x: 1, y: 0.694, z: 0, w: 1}
+  currentSquareColor: {x: 0.992, y: 1, z: 0, w: 1}
   startSquareColor: {x: 1, y: 0, z: 0, w: 1}
   endSquareColor: {x: 0, y: 1, z: 0, w: 1}
   wallSquareColor: {x: 0, y: 0, z: 0, w: 1}

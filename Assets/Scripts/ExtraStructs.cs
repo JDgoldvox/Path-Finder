@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public enum Command
+{
+    start, end, wall, empty, frontier, visited, bestPath, current
+}
 
 public static class ExtraFunctions
 {

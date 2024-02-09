@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum Command
-{
-    start, end, wall, empty, frontier, visited, bestPath
-}
-
 public class PlayerUIControls : MonoBehaviour
 {
     Command currentClickCommand = Command.start;

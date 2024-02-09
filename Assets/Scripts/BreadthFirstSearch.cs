@@ -24,35 +24,43 @@ public class BreadthFirstSearch : MonoBehaviour
 
         Queue<Vector2Int> frontier = new Queue<Vector2Int>();
         frontier.Enqueue(start);
-        S_boardActionHub.ChangeSquareColour(start, Command.frontier);
 
         HashSet<Vector2Int> reached = new HashSet<Vector2Int>();
         reached.Add(start);
-        S_boardActionHub.ChangeSquareColour(start, Command.visited);
 
         Vector2Int current = new Vector2Int();
             
         //magic happens inside here
         while (frontier.Count > 0)
         {
-            //wait seconds
-            yield return new WaitForSeconds(0.01f);
-
             current = frontier.Dequeue();
-            S_boardActionHub.ChangeSquareColour(current, Command.visited);
+
+            S_boardActionHub.ChangeSquareColour(current, Command.current);
+            //wait seconds
+            yield return new WaitForSeconds(0.11f);
+
+            //end condition
+            if (current == end)
+            {
+                break;
+            }    
 
             //get neighbours
             List<Vector2Int> neighbours = GetNeighbours(ref board, current);
 
+            //add to frontier if not already reached
             foreach (Vector2Int neighbourSquare in neighbours)
             {
                 //if neighbour square not visited nieghbour square, 
-                if(!reached.Contains(neighbourSquare)) {
+                if (!reached.Contains(neighbourSquare)) {
                     frontier.Enqueue(neighbourSquare);
                     reached.Add(neighbourSquare);
 
                     S_boardActionHub.ChangeSquareColour(neighbourSquare, Command.frontier);
+                    S_boardActionHub.ChangeSquareColour(current, Command.visited);
                 }
+                //return the current square color to a visited color
+                S_boardActionHub.ChangeSquareColour(current, Command.visited);
             }
         }
     }
