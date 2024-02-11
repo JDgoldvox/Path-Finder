@@ -5,7 +5,9 @@ using UnityEngine;
 public class BoardActionHub : MonoBehaviour
 {
     private BreadthFirstSearch S_bfs;
-    
+    private Dijkstra S_Dijkstra;
+    private AStar S_AStar;
+
     private BoardGenerator S_boardGenerator;
     private Dictionary<Vector2Int, GameObject> board;
     private bool hasStartSquare = false, hasEndSquare = false;
@@ -22,6 +24,8 @@ public class BoardActionHub : MonoBehaviour
     {
         S_boardGenerator = GetComponent<BoardGenerator>();
         S_bfs = GetComponent<BreadthFirstSearch>();
+        S_Dijkstra = GetComponent<Dijkstra>();
+        S_AStar = GetComponent<AStar>();
     }
 
     // Start is called before the first frame update
@@ -47,7 +51,9 @@ public class BoardActionHub : MonoBehaviour
 
     void Algorithm()
     {
-        StartCoroutine(S_bfs.StartAlgorithm(board, startSquare, endSquare));
+        //StartCoroutine(S_bfs.StartAlgorithm(board, startSquare, endSquare));
+        StartCoroutine(S_Dijkstra.StartAlgorithm(board, startSquare, endSquare));
+        //StartCoroutine(S_AStar.StartAlgorithm(board, startSquare, endSquare));
     }
 
     public void ChangeSquareColour(Vector2Int squarePosition, Command command)

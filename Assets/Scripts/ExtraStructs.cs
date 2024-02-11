@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 public enum Command
 {
     start, end, wall, empty, frontier, visited, bestPath, current
@@ -24,4 +26,41 @@ public static class ExtraFunctions
         return newxy;
     }
 
+}
+
+
+/// <summary>
+/// Priority queue created by Chat GPT
+/// </summary>
+/// <typeparam name="TPriority"></typeparam>
+/// <typeparam name="TValue"></typeparam>
+public class PriorityQueue<TPriority, TValue>
+{
+    private SortedDictionary<TPriority, Queue<TValue>> dictionary = new SortedDictionary<TPriority, Queue<TValue>>();
+
+    public void Enqueue(TPriority priority, TValue value)
+    {
+        if (!dictionary.ContainsKey(priority))
+        {
+            dictionary[priority] = new Queue<TValue>();
+        }
+        dictionary[priority].Enqueue(value);
+    }
+
+    public TValue Dequeue()
+    {
+        if (dictionary.Count == 0)
+        {
+            throw new InvalidOperationException("The queue is empty.");
+        }
+        var first = dictionary.First();
+        var value = first.Value.Dequeue();
+        if (first.Value.Count == 0)
+        {
+            dictionary.Remove(first.Key);
+        }
+        return value;
+    }
+
+    public bool IsEmpty => dictionary.Count == 0;
 }
