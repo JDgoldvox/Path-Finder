@@ -12,8 +12,6 @@ public class Dijkstra : MonoBehaviour
     Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
     Vector2Int targetSquare;
 
-    PriorityQueue<int, int> qwe;
-
     private void Awake()
     {
         S_boardGenerator = GetComponent<BoardGenerator>();
@@ -28,8 +26,11 @@ public class Dijkstra : MonoBehaviour
     {
         targetSquare = end;
 
-        Queue<Vector2Int> frontier = new Queue<Vector2Int>();
-        frontier.Enqueue(start);
+        PriorityQueue<float, Vector2Int> frontier = new PriorityQueue<float, Vector2Int>();
+        frontier.Enqueue(0, start);
+
+        //Dictionary<Vector2Int, float> cost = new Dictionary<Vector2Int, float>();
+        //cost[start] = 0;
 
         cameFrom.Clear();
         cameFrom[start] = new Vector2Int(-1, -1);
@@ -55,16 +56,19 @@ public class Dijkstra : MonoBehaviour
             List<Vector2Int> neighbours = GetNeighbours(ref board, current);
 
             //add to frontier if not already reached
-            foreach (Vector2Int neighbourSquare in neighbours)
+            foreach (Vector2Int next in neighbours)
             {
-                //if neighbour square not visited nieghbour square, 
-                if (!cameFrom.ContainsKey(neighbourSquare))
-                {
-                    frontier.Enqueue(neighbourSquare);
-                    cameFrom[neighbourSquare] = current;
+                S_boardActionHub.ChangeSquareColour(current, Command.visited);
 
-                    S_boardActionHub.ChangeSquareColour(neighbourSquare, Command.frontier);
-                    S_boardActionHub.ChangeSquareColour(current, Command.visited);
+                //if neighbour square not visited nieghbour square, 
+                if (!cameFrom.ContainsKey(next))
+                {
+                    float newCost = ManhattanDistance(current, end);
+
+                    frontier.Enqueue(newCost, next);
+                    cameFrom[next] = current;
+
+                    S_boardActionHub.ChangeSquareColour(next, Command.frontier);
                 }
             }
         }
@@ -141,5 +145,10 @@ public class Dijkstra : MonoBehaviour
         }
 
         return correctPath;
+    }
+
+    private float ManhattanDistance(Vector2Int start, Vector2Int end)
+    {
+        return Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y);
     }
 }

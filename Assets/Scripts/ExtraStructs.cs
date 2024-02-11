@@ -62,5 +62,22 @@ public class PriorityQueue<TPriority, TValue>
         return value;
     }
 
+    public int Count
+    {
+        get { return dictionary.Sum(q => q.Value.Count); }
+    }
+
     public bool IsEmpty => dictionary.Count == 0;
+}
+
+public struct Vector2IntIntPair
+{
+    public Vector2Int vector2Int;
+    public float intValue;
+
+    public Vector2IntIntPair(Vector2Int vector2Int, float intValue)
+    {
+        this.vector2Int = vector2Int;
+        this.intValue = intValue;
+    }
 }

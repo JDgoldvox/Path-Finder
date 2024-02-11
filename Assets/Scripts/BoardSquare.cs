@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BoardSquare : MonoBehaviour
 {
-    public Vector2 centre = new Vector2();
-    public bool isWall = false;
+    [HideInInspector] public Vector2 centre = new Vector2();
+    [HideInInspector] public bool isWall = false;
 
     public BoardSquare(float x, float y)
     {
