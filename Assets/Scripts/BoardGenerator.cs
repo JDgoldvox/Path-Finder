@@ -13,6 +13,8 @@ public class BoardGenerator : MonoBehaviour
 
     [HideInInspector] public int squareSize = 1;
     [HideInInspector] public float squareScale = 2.5f;
+
+    private Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
     public Dictionary<Vector2Int, GameObject> GenerateBoard()
     {
         //Instantiate a square for each 

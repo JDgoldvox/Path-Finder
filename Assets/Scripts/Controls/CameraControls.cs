@@ -29,7 +29,6 @@ public class CameraControls : MonoBehaviour
 
         zoom = S_cameraInputActions.Player.Zoom;
         zoom.Enable();
-
     }
 
     private void OnDisable()
