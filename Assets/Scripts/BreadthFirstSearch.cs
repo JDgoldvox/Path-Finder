@@ -7,6 +7,9 @@ public class BreadthFirstSearch : MonoBehaviour
 {
     private BoardGenerator S_boardGenerator;
     private BoardActionHub S_boardActionHub;
+    private bool algorithmFinished = false;
+    Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
+    Vector2Int targetSquare;
 
     private void Awake()
     {
@@ -20,16 +23,16 @@ public class BreadthFirstSearch : MonoBehaviour
 
     public IEnumerator StartAlgorithm(Dictionary<Vector2Int, GameObject> board, Vector2Int start, Vector2Int end)
     {
-        Debug.Log("starting aglor");
+        targetSquare = end; 
 
         Queue<Vector2Int> frontier = new Queue<Vector2Int>();
         frontier.Enqueue(start);
 
-        HashSet<Vector2Int> reached = new HashSet<Vector2Int>();
-        reached.Add(start);
+        cameFrom.Clear();
+        cameFrom[start] = new Vector2Int(-1,-1);
 
         Vector2Int current = new Vector2Int();
-            
+
         //magic happens inside here
         while (frontier.Count > 0)
         {
@@ -52,16 +55,34 @@ public class BreadthFirstSearch : MonoBehaviour
             foreach (Vector2Int neighbourSquare in neighbours)
             {
                 //if neighbour square not visited nieghbour square, 
-                if (!reached.Contains(neighbourSquare)) {
+                if (!cameFrom.ContainsKey(neighbourSquare))
+                {
                     frontier.Enqueue(neighbourSquare);
-                    reached.Add(neighbourSquare);
+                    cameFrom[neighbourSquare] = current;
 
                     S_boardActionHub.ChangeSquareColour(neighbourSquare, Command.frontier);
                     S_boardActionHub.ChangeSquareColour(current, Command.visited);
                 }
-                //return the current square color to a visited color
-                S_boardActionHub.ChangeSquareColour(current, Command.visited);
             }
+        }
+
+        algorithmFinished = true;
+
+        List<Vector2Int> correctPath = new List<Vector2Int>();
+
+        Vector2Int previous = new Vector2Int(-2, -2);
+        Vector2Int lastCoord = new Vector2Int(-1, -1);
+        previous = targetSquare;
+
+        while (previous != lastCoord)
+        {
+            previous = cameFrom[previous];
+            correctPath.Add(previous);
+        }
+
+        foreach(Vector2Int square in correctPath)
+        {
+            S_boardActionHub.ChangeSquareColour(square, Command.bestPath);
         }
     }
 
@@ -99,5 +120,22 @@ public class BreadthFirstSearch : MonoBehaviour
             }
         }
         return neighbours;
+    }
+
+    public List<Vector2Int> GetFlowField()
+    {
+        if (!algorithmFinished) { return null; }
+
+        List<Vector2Int> correctPath = new List<Vector2Int>();
+
+        Vector2Int previous = new Vector2Int(-1,-1);
+
+        while (previous != Vector2.zero)
+        {
+            previous = cameFrom[targetSquare];
+            correctPath.Add(previous);
+        }
+
+        return correctPath;
     }
 }
