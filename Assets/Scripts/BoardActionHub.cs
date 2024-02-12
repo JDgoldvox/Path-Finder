@@ -8,6 +8,7 @@ public class BoardActionHub : MonoBehaviour
     private Dijkstra S_Dijkstra;
     private AStar S_AStar;
 
+    [SerializeField] private Agent S_Agent;
     private BoardGenerator S_boardGenerator;
     private Dictionary<Vector2Int, GameObject> board;
     private bool hasStartSquare = false, hasEndSquare = false;
@@ -19,7 +20,6 @@ public class BoardActionHub : MonoBehaviour
     [SerializeField] private Vector4 startSquareColor, endSquareColor, wallSquareColor, emptySquareColor, wrongSquareColor;
     [HideInInspector] public bool isStep = false;
     private bool isContinuousStep = false;
-
     private void Awake()
     {
         S_boardGenerator = GetComponent<BoardGenerator>();
@@ -176,5 +176,10 @@ public class BoardActionHub : MonoBehaviour
 
         //reset to default color
         sr.color = emptySquareColor;
+    }
+
+    public void PassBestPath(List<Vector2Int> pathPassed)
+    {
+        S_Agent.ActivateAgent(board, pathPassed, startSquare, endSquare);
     }
 }

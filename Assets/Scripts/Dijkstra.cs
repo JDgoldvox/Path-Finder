@@ -86,11 +86,16 @@ public class Dijkstra : MonoBehaviour
             previous = cameFrom[previous];
             correctPath.Add(previous);
         }
+        correctPath.Remove(lastCoord);
+
+        correctPath.Reverse();
 
         foreach (Vector2Int square in correctPath)
         {
             S_boardActionHub.ChangeSquareColour(square, Command.bestPath);
         }
+
+        S_boardActionHub.PassBestPath(correctPath);
     }
 
     private List<Vector2Int> GetNeighbours(ref Dictionary<Vector2Int, GameObject> board, Vector2Int current)
@@ -143,6 +148,8 @@ public class Dijkstra : MonoBehaviour
             previous = cameFrom[targetSquare];
             correctPath.Add(previous);
         }
+
+        correctPath.Reverse();
 
         return correctPath;
     }

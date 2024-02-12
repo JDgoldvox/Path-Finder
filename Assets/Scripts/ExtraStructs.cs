@@ -22,7 +22,7 @@ public static class ExtraFunctions
     {
         Vector2Int newxy = new Vector2Int();
         newxy.x = (int)((xInput + squareSize/2) / resolution);
-        newxy.y = (int)((yInput + +squareSize/2) / resolution);
+        newxy.y = (int)((yInput + squareSize/2) / resolution);
         return newxy;
     }
 
