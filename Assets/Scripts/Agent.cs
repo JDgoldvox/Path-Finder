@@ -9,22 +9,18 @@ public class Agent : MonoBehaviour
     [SerializeField] private GameObject marker;
     private float speed = 0.015f;
     private float distanceTravelled = 0f;
-    private float distancePerDot = 0.1f;
+    private float distancePerDot = 1f;
 
-    public void ActivateAgent(Dictionary<Vector2Int, GameObject> board, List<Vector2Int> squaresToVisit, Vector2Int start, Vector2Int end)
+    public void ActivateAgent(Dictionary<Vector2Int, GameObject> board, List<Vector2Int> squaresToVisit, Vector2Int start, Vector2Int end, Vector2 endClickCoords)
     {
-        foreach(Vector3Int vector3Int in squaresToVisit)
-        {
-            Debug.Log(vector3Int);
-        }
         //position agent at start
         BoardSquare startScript = board[start].GetComponent<BoardSquare>();
         transform.position = startScript.centre;
 
-        StartCoroutine(MoveToTargets(board, squaresToVisit, end));
+        StartCoroutine(MoveToTargets(board, squaresToVisit, end, endClickCoords));
     }
 
-    private IEnumerator MoveToTargets(Dictionary<Vector2Int, GameObject> board, List<Vector2Int> squaresToVisit, Vector2Int end)
+    private IEnumerator MoveToTargets(Dictionary<Vector2Int, GameObject> board, List<Vector2Int> squaresToVisit, Vector2Int end, Vector2 endClickCoords)
     {
         foreach (Vector2Int v2 in squaresToVisit)
         {
@@ -38,6 +34,9 @@ public class Agent : MonoBehaviour
         Vector2 lastPositionToMove = lastScript.centre;
 
         yield return StartCoroutine(MoveAgent(lastPositionToMove));
+
+        //move to mouse Click location
+        yield return StartCoroutine(MoveAgent(endClickCoords));
     }
 
     private IEnumerator MoveAgent(Vector2 positionToMove)

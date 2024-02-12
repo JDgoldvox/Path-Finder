@@ -20,6 +20,8 @@ public class BoardActionHub : MonoBehaviour
     [SerializeField] private Vector4 startSquareColor, endSquareColor, wallSquareColor, emptySquareColor, wrongSquareColor;
     [HideInInspector] public bool isStep = false;
     private bool isContinuousStep = false;
+    [HideInInspector] public Vector2 endclickposition;
+
     private void Awake()
     {
         S_boardGenerator = GetComponent<BoardGenerator>();
@@ -60,7 +62,7 @@ public class BoardActionHub : MonoBehaviour
     {
         Color colorChange = new Color();
 
-        if (command == Command.start) 
+        if (command == Command.start)
         {
             ResetSquare(startSquare);
             startSquare = squarePosition;
@@ -70,7 +72,7 @@ public class BoardActionHub : MonoBehaviour
             //check if we replaced end
             if (endSquare == startSquare) { hasEndSquare = false; }
         }
-        else if (command == Command.end) 
+        else if (command == Command.end)
         {
             ResetSquare(endSquare);
             endSquare = squarePosition;
@@ -78,17 +80,17 @@ public class BoardActionHub : MonoBehaviour
             colorChange = endSquareColor;
 
             //check if we replaced start
-            if(endSquare == startSquare){ hasStartSquare = false; }
+            if (endSquare == startSquare) { hasStartSquare = false; }
         }
         else if (command == Command.wall)
         {
-            colorChange = wallSquareColor; 
+            colorChange = wallSquareColor;
         }
         else if (command == Command.empty)
         {
             ResetSquare(squarePosition);
         }
-        else if(command == Command.frontier)
+        else if (command == Command.frontier)
         {
             //Don't over write the color of the start or end square
             if (squarePosition == startSquare || squarePosition == endSquare) { return; }
@@ -109,14 +111,14 @@ public class BoardActionHub : MonoBehaviour
 
             colorChange = bestPathColor;
         }
-        else if(command == Command.current)
+        else if (command == Command.current)
         {
             //Don't over write the color of the start or end square
             if (squarePosition == startSquare || squarePosition == endSquare) { return; }
 
             colorChange = currentSquareColor;
         }
-        else { 
+        else {
             colorChange = wrongSquareColor;
             Debug.Log("This color change does not have a command. Action undefined.");
         }
@@ -130,7 +132,7 @@ public class BoardActionHub : MonoBehaviour
 
         //change color
         SpriteRenderer sr = squareToChange.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        if(sr == null)
+        if (sr == null)
         {
             Debug.Log("Sprite renderer is null! Can't change color");
             return;
@@ -138,9 +140,9 @@ public class BoardActionHub : MonoBehaviour
         sr.color = colorChange;
 
         //change wall status
-        if(command == Command.wall)
+        if (command == Command.wall)
         {
-            if(!squareToChange.TryGetComponent(out BoardSquare boardSquareScript))
+            if (!squareToChange.TryGetComponent(out BoardSquare boardSquareScript))
             {
                 Debug.Log("Cannot grab square script");
             }
@@ -180,6 +182,14 @@ public class BoardActionHub : MonoBehaviour
 
     public void PassBestPath(List<Vector2Int> pathPassed)
     {
-        S_Agent.ActivateAgent(board, pathPassed, startSquare, endSquare);
+        S_Agent.ActivateAgent(board, pathPassed, startSquare, endSquare, endclickposition);
+    }
+
+    public void SetEndClickCoords(Command command, Vector2 clickCoordinates)
+    {
+        if(command == Command.end)
+        {
+            endclickposition = clickCoordinates;
+        }
     }
 }

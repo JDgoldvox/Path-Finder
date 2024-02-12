@@ -72,6 +72,7 @@ public class PlayerUIControls : MonoBehaviour
 
         if(S_boardGenerator.board.TryGetValue(quantizedCoords, out GameObject square))
         {
+            S_boardActionHub.SetEndClickCoords(currentClickCommand, clickCoordinates);
             S_boardActionHub.ChangeSquareColour(quantizedCoords, currentClickCommand);
         }
     }

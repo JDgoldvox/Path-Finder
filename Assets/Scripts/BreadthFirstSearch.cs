@@ -79,11 +79,16 @@ public class BreadthFirstSearch : MonoBehaviour
             previous = cameFrom[previous];
             correctPath.Add(previous);
         }
+        correctPath.Remove(lastCoord);
 
-        foreach(Vector2Int square in correctPath)
+        foreach (Vector2Int square in correctPath)
         {
             S_boardActionHub.ChangeSquareColour(square, Command.bestPath);
         }
+
+        correctPath.Reverse();
+
+        S_boardActionHub.PassBestPath(correctPath);
     }
 
     private List<Vector2Int> GetNeighbours(ref Dictionary<Vector2Int, GameObject> board, Vector2Int current)

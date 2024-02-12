@@ -135,25 +135,6 @@ public class Dijkstra : MonoBehaviour
         return neighbours;
     }
 
-    public List<Vector2Int> GetFlowField()
-    {
-        if (!algorithmFinished) { return null; }
-
-        List<Vector2Int> correctPath = new List<Vector2Int>();
-
-        Vector2Int previous = new Vector2Int(-1, -1);
-
-        while (previous != Vector2.zero)
-        {
-            previous = cameFrom[targetSquare];
-            correctPath.Add(previous);
-        }
-
-        correctPath.Reverse();
-
-        return correctPath;
-    }
-
     private float ManhattanDistance(Vector2Int start, Vector2Int end)
     {
         return Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y);
