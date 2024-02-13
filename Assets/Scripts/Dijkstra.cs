@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Dijkstra : MonoBehaviour
 {
     private BoardGenerator S_boardGenerator;
@@ -11,15 +10,17 @@ public class Dijkstra : MonoBehaviour
     private bool algorithmFinished = false;
     Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
     Vector2Int targetSquare;
+    private float speedOfStep = 0.11f;
+
+    public void ChangeSpeedOfStep(float speed)
+    {
+        speedOfStep = speed;
+    }
 
     private void Awake()
     {
         S_boardGenerator = GetComponent<BoardGenerator>();
         S_boardActionHub = GetComponent<BoardActionHub>();
-    }
-    void Start()
-    {
-
     }
 
     public IEnumerator StartAlgorithm(Dictionary<Vector2Int, GameObject> board, Vector2Int start, Vector2Int end)
@@ -44,7 +45,7 @@ public class Dijkstra : MonoBehaviour
 
             S_boardActionHub.ChangeSquareColour(current, Command.current);
             //wait seconds
-            yield return new WaitForSeconds(0.11f);
+            yield return new WaitForSeconds(speedOfStep);
 
             //end condition
             if (current == end)

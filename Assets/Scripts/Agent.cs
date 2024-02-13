@@ -7,7 +7,7 @@ public class Agent : MonoBehaviour
 {
     [SerializeField] private BoardActionHub S_BoardActionHub;
     [SerializeField] private GameObject marker;
-    private float speed = 0.015f;
+    private float speed = 0.15f;
     private float distanceTravelled = 0f;
     private float distancePerDot = 1f;
 
@@ -17,11 +17,13 @@ public class Agent : MonoBehaviour
         BoardSquare startScript = board[start].GetComponent<BoardSquare>();
         transform.position = startScript.centre;
 
-        StartCoroutine(MoveToTargets(board, squaresToVisit, end, endClickCoords));
+        StartCoroutine(MoveToTargets(board, squaresToVisit,start, end, endClickCoords));
     }
 
-    private IEnumerator MoveToTargets(Dictionary<Vector2Int, GameObject> board, List<Vector2Int> squaresToVisit, Vector2Int end, Vector2 endClickCoords)
+    private IEnumerator MoveToTargets(Dictionary<Vector2Int, GameObject> board, List<Vector2Int> squaresToVisit, Vector2Int start, Vector2Int end, Vector2 endClickCoords)
     {
+        yield return StartCoroutine(MoveAgent(start));
+
         foreach (Vector2Int v2 in squaresToVisit)
         {
             BoardSquare script = board[v2].GetComponent<BoardSquare>();

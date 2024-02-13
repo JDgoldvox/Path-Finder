@@ -21,6 +21,7 @@ public class BoardActionHub : MonoBehaviour
     [HideInInspector] public bool isStep = false;
     private bool isContinuousStep = false;
     [HideInInspector] public Vector2 endclickposition;
+    private AlgorithmType currentAlgorithm = AlgorithmType.bfs;
 
     private void Awake()
     {
@@ -53,9 +54,18 @@ public class BoardActionHub : MonoBehaviour
 
     void Algorithm()
     {
-        //StartCoroutine(S_bfs.StartAlgorithm(board, startSquare, endSquare));
-        StartCoroutine(S_Dijkstra.StartAlgorithm(board, startSquare, endSquare));
-        //StartCoroutine(S_AStar.StartAlgorithm(board, startSquare, endSquare));
+        if(currentAlgorithm == AlgorithmType.bfs)
+        {
+            StartCoroutine(S_bfs.StartAlgorithm(board, startSquare, endSquare));
+        }
+        else if (currentAlgorithm == AlgorithmType.dijkstra)
+        {
+            StartCoroutine(S_Dijkstra.StartAlgorithm(board, startSquare, endSquare));
+        }
+        else if (currentAlgorithm == AlgorithmType.astar)
+        {
+            StartCoroutine(S_AStar.StartAlgorithm(board, startSquare, endSquare));
+        }
     }
 
     public void ChangeSquareColour(Vector2Int squarePosition, Command command)
@@ -190,6 +200,33 @@ public class BoardActionHub : MonoBehaviour
         if(command == Command.end)
         {
             endclickposition = clickCoordinates;
+        }
+    }
+
+    public void SetSquareCost(Vector2Int pos, float cost)
+    {
+        GameObject square = board[pos];
+        square.GetComponent<BoardSquare>().UpdateCost(cost);
+    }
+
+    public void ChangeAlgorithmType(AlgorithmType algorithm)
+    {
+        currentAlgorithm = algorithm;
+    }
+
+    public void ChangeSpeedOfStep(float speed)
+    {
+        if(currentAlgorithm == AlgorithmType.bfs)
+        {
+            S_bfs.ChangeSpeedOfStep(speed);
+        }
+        else if (currentAlgorithm == AlgorithmType.dijkstra)
+        {
+            S_Dijkstra.ChangeSpeedOfStep(speed);
+        }
+        else if (currentAlgorithm == AlgorithmType.astar)
+        {
+            S_AStar.ChangeSpeedOfStep(speed);
         }
     }
 }
